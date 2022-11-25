@@ -5,7 +5,7 @@ const User = require('../models/User.model');
 const Record = require('../models/Record.model');
 const Comment = require('../models/Comment.model');
 const router = require('express').Router();
-//const isAuthenticated = require('../middleware/isAuthenticated')
+const isAuthenticated = require('../middleware/isAuthenticated')
 
 
 
@@ -54,7 +54,6 @@ const foundEmail = await User.findOne({email});
 // If email is unique, proceed to hash the password
 const salt = genSaltSync(10)
 const hashedPassword = hashSync(password, salt)
-console.log(hashedPassword)
 
 // Create the new user in the database
 
@@ -62,29 +61,29 @@ await User.create({ email, userName: userName.toLowerCase(), password: hashedPas
 res.status(201).json({ message: 'User created' })
 
 })
-/*
-router.post('/login', async(req, res, next) => {
-  const { email, password } = req.body;
 
-   if (email === '' || password === '') {
+router.post('/login', async(req, res, next) => {
+  const { userName, password } = req.body;
+
+   if (userName === '' || password === '') {
     res.status(400).json({ message: "Provide email and password." });
     return;
   }
 
 // Check the users collection if a user with the same email exists
 
-const currentUser = await User.findOne({ email })
-
-console.log(currentUser)
+const currentUser = await User.findOne({ userName })
 
 // Check if our user exists
 
  if (currentUser) {
+
   
 // Check the password of our user
-  if (compareSync(password, currentUser.hashedPassword)) {
+  if (compareSync(password, currentUser.password)) {
     const userCopy = { ...currentUser._doc }
-    delete userCopy.hashedPassword
+    delete userCopy.password
+    
 
 // Generate the JWT (don't forget to put a secret in your .env file)
     const authToken = jwt.sign(
@@ -109,17 +108,13 @@ console.log(currentUser)
 
 
 // GET  /auth/verify  -  Used to verify JWT stored on the client
-router.get('/verify', isAuthenticated, (req, res, next) => {   
+router.get('/verify', isAuthenticated, (req, res, next) => {
 
-// If JWT token is valid the payload gets decoded by the
-// isAuthenticated middleware and made available on `req.payload`
-  console.log(`req.payload`, req.payload);
-
-// Send back the object with user data
+  // Send back the object with user data
 // previously set as the token payload
  
   res.status(200).json({ payload: req.payload, message: 'Token OK' })
 });
-*/
+
 
 module.exports = router
