@@ -9,6 +9,7 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 
 
 
+
 // POST /auth/signup  - Creates a new user in the database
 router.post('/signup', async(req, res, next) => {
 
@@ -115,6 +116,8 @@ router.get('/verify', isAuthenticated, (req, res, next) => {
  
   res.status(200).json({ payload: req.payload, message: 'Token OK' })
 });
+
+
 
 
 module.exports = router

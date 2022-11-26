@@ -3,7 +3,9 @@ const Record = require("../models/Record.model");
 const User = require('../models/User.model');
 //const Comment = require('../models/Comment.Model');
 //const jwt = require("jsonwebtoken");
-//const isAuthenticated = require('../middlewares/isAuthenticated');
+//const isAuthenticated = require('../middleware/isAuthenticated');
+const uploader = require('../middleware/cloudinary.config.js');
+
 
 router.get('/', async(req, res, next) => {
     const books = await Record.find()
@@ -30,6 +32,20 @@ router.post('/', async (req, res, next) => {
       
         res.status(201).json({ message: 'Record created' })
       });
+
+      router.post('/upload', uploader.single("imageUrl"), (req, res, next) => {
+        // the uploader.single() callback will send the file to cloudinary and get you and obj with the url in return
+        console.log('file is: ', req.file)
+        
+        if (!req.file) {
+          console.log("there was an error uploading the file")
+          next(new Error('No file uploaded!'))
+          return;
+        }
+        
+        // You will get the image url in 'req.file.path'
+        // Your code to store your url in your database should be here
+      })
 
 
 
