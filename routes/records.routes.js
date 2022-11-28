@@ -11,15 +11,15 @@ router.get('/', async(req, res, next) => {
   res.json( [ ...records ] )
 });
 
-router.post('/upload', uploader.single("imageUrl"), async (req, res, next) => {
+router.post('/upload', isAuthenticated, uploader.single("imageUrl"), async (req, res, next) => {
   // the uploader.single() callback will send the file to cloudinary and get you and obj with the url in return
   console.log('image url: ', req.file.path)
   console.log('req.body.title: ', req.body.title)
   const { path } = req.file;
   const { title, artist, yearReleased, label, genre } = req.body;
   await Record.create({ title, image: path, artist, yearReleased, label, genre })
-  //const user = await User.findById(req.payload.user._id)
-  //console.log('session user: ', user)
+  const user = await User.findById(req.payload.user._id)
+  console.log('session user: ', user)
         
   if (!req.file) {
     console.log("there was an error uploading the file")
