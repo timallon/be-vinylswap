@@ -12,8 +12,8 @@ const recordSchema = new Schema(
       // required: [true, "Artist's name is required."],
     },
     yearReleased: {
-      type: Date,
-      // required: [true, 'Start time is required.'],
+      type: String,
+      // todo: make String > Date .required: [true, 'Start time is required.'],
       trim: true
       },
       label: {
