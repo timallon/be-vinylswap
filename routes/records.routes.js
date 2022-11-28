@@ -12,31 +12,15 @@ router.get('/', async(req, res, next) => {
     res.json( [ ...books ] )
 });
 
-router.post('/', async (req, res, next) => {
-    console.log('record route')
-    
-    
-//       const { title, author, yearPublished, genre, image } = req.body;
-       
-//         console.log(req.body.record)
-//         const record = await Record.create({
-//             title: req.body.title,
-// //            author: req.body.author,
-// //            author: req.body.author,
-// //            yearPublished: req.body.yearPublished,
-// //            genre: req.body.genre,
-// //            genre: req.body.language,
-// //            image: req.body.image,
 
-//         })
-      
-        res.status(201).json({ message: 'Record created' })
-      });
 
-      router.post('/upload', uploader.single("imageUrl"), (req, res, next) => {
+      router.post('/upload', uploader.single("imageUrl"), async (req, res, next) => {
         // the uploader.single() callback will send the file to cloudinary and get you and obj with the url in return
         console.log('file is: ', req.file)
-        console.log('req.body: ', req.body)
+        console.log('req.body.title: ', req.body.title)
+        const { title } = req.body;
+        await Record.create({ title })
+
         
         if (!req.file) {
           console.log("there was an error uploading the file")
@@ -48,7 +32,28 @@ router.post('/', async (req, res, next) => {
         // Your code to store your url in your database should be here
       })
       
-
+      // router.post('/upload', async (req, res, next) => {
+      //   const { title } = req.body;
+      //   await Record.create({ title })
+      //   res.status(201).json({ message: 'Record created' })
+      //     console.log('req.body:', req.body)
+          
+          
+      // //       const { title, author, yearPublished, genre, image } = req.body;
+             
+      // //         console.log(req.body.record)
+      // //         const record = await Record.create({
+      // //             title: req.body.title,
+      // // //            author: req.body.author,
+      // // //            author: req.body.author,
+      // // //            yearPublished: req.body.yearPublished,
+      // // //            genre: req.body.genre,
+      // // //            genre: req.body.language,
+      // // //            image: req.body.image,
+      
+      // //         })
+            
+      //       });
 
 
 
