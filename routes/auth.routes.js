@@ -29,7 +29,7 @@ const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
 if (!passwordRegex.test(password)) {
   res.status(400).json({ message: 'Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.' });
   return;
-}
+} 
 // If the user with the same username already exists, send an error response
 const foundUserName = await User.findOne({userName: userName.toLowerCase()});
 
@@ -94,6 +94,7 @@ router.post('/login', async(req, res, next) => {
         algorithm: 'HS256',
       }
     )
+    console.log(authToken)
     res.status(200).json({ status: 200, token: authToken })
   } else {
     res.status(400).json({ message: 'Wrong password' })
