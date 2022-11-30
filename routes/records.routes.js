@@ -17,8 +17,8 @@ router.post('/upload', isAuthenticated, uploader.single("imageUrl"), async (req,
   console.log('req.body.title: ', req.body.title)
   const { path } = req.file;
   const { title, artist, yearReleased, label, genre } = req.body;
-  await Record.create({ title, image: path, artist, yearReleased, label, genre })
-  const user = await User.findById(req.payload.user._id)
+  const newRecord = await Record.create({ title, image: path, artist, yearReleased, label, genre })
+  const user = await User.findByIdAndUpdate(req.payload.user._id, {$push:{record:newRecord._id}}, {new:true})
   console.log('session user: ', user)
         
   if (!req.file) {

@@ -24,7 +24,7 @@ const recordSchema = new Schema(
       genre: {
       type: String,
       // required: [true, 'End time is required.'],
-      //enum: ['Rock', 'Pop', 'Indie','Soul', 'Electronic', 'Hip-Hop', 'Psychedelic', 'Reggae','Jazz', 'Other'],
+      //enum: ['Rock', 'Pop', 'Indie','Soul', 'Electronic', 'Hip-Hop', 'Psychedelic', 'Reggae','Jazz', 'Punk', 'Other'],
       trim: true
       },
       image: {
