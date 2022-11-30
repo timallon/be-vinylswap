@@ -30,6 +30,18 @@ router.post('/upload', isAuthenticated, uploader.single("imageUrl"), async (req,
   // You will get the image url in 'req.file.path'
   // Your code to store your url in your database should be here
 })
+
+// GET route to retrieve and display details of a specific record:
+router.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const record = await Record.findById(id)
+
+    res.json({ ...record._doc })
+  } catch (error) {
+    res.status(404).json({ message: 'No beer with this id' })
+  }
+})
       
 module.exports = router;
 
