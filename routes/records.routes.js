@@ -39,9 +39,30 @@ router.get('/:id', async (req, res, next) => {
 
     res.json({ ...record._doc })
   } catch (error) {
-    res.status(404).json({ message: 'No beer with this id' })
+    res.status(404).json({ message: 'No record with this id' })
   }
 })
+
+router.put('/:id/update', uploader.single("imageUrl"), async (req, res, next) => {
+  console.log("req.file: ", req.file, req.body)
+  console.log("req.body: ", req.body)
+  const { id } = req.params
+  const body = {...req.body }
+  const image = {image:req.file.path}
+  
+
+  const record = await Record.findByIdAndUpdate(id, body, image, { new: true })
+
+  res.json({ record })
+})
+
+router.delete('/:id/delete', async (req, res, next) => {
+  const { id } = req.params
+  const record = await Record.findByIdAndDelete(id)
+
+  res.json(record)
+})
+
       
 module.exports = router;
 
