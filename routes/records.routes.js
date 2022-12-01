@@ -27,10 +27,7 @@ router.post('/upload', isAuthenticated, uploader.single("imageUrl"), async (req,
     next(new Error('No file uploaded!'))
     return;
   }
-  
-  
-  // You will get the image url in 'req.file.path'
-  // Your code to store your url in your database should be here
+  res.status(200).json(newRecord)
 })
 
 // route to create a comment
@@ -43,9 +40,6 @@ router.post('/:id', async(req, res) => {
   await record.save()
 
   res.status(200).json(newComment)
-
-
-
 
 })
 // GET route to retrieve and display details of a specific record:
