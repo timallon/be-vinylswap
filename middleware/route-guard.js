@@ -8,7 +8,6 @@ const isConnected = (req, res, next) => {
     } else {
       next();
     }
-    
   };
    
   // if an already logged in user tries to access the login page it
