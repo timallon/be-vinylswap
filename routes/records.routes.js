@@ -33,12 +33,12 @@ router.post('/upload', isAuthenticated, uploader.single("imageUrl"), async (req,
   // Your code to store your url in your database should be here
 })
 
-
+// route to create a comment
 router.post('/:id', async(req, res) => {
   const { id } = req.params;
   const record = await Record.findById(id);
-  const { title , description } = req.body;
-  const newComment = await Comment.create( { title, description, recordId: record } )
+  const {  description } = req.body;
+  const newComment = await Comment.create( {  description, recordId: record } )
   record.comment.push(newComment)
   await record.save()
 
