@@ -7,21 +7,21 @@ const commentSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
-    record: {
+    recordId: {
       type: Schema.Types.ObjectId,
-      ref: 'Record'
+      ref: 'RecordId'
     },
     title: {
       type: String,
-      required: true,
+ //    required: true,
     },
     description: {
       type: String,
-      required: true,
+  //    required: true,
     },
     created: {
       type: Date,
-      default: Date.now
+ //     default: Date.now
     }
   },
   {

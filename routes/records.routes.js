@@ -1,10 +1,11 @@
 const router = require("express").Router();
 const Record = require("../models/Record.model");
 const User = require('../models/User.model');
-//const Comment = require('../models/Comment.Model');
+const Comment = require('../models/Comment.model');
 const jwt = require("jsonwebtoken");
 const isAuthenticated = require('../middleware/isAuthenticated');
 const uploader = require('../middleware/cloudinary.config.js');
+
 
 router.get('/', async(req, res, next) => {
   const records = await Record.find()
@@ -27,22 +28,38 @@ router.post('/upload', isAuthenticated, uploader.single("imageUrl"), async (req,
     return;
   }
   
+  
   // You will get the image url in 'req.file.path'
   // Your code to store your url in your database should be here
 })
 
+
+router.post('/:id', async(req, res) => {
+  const { id } = req.params;
+  const record = await Record.findById(id);
+  const { title , description } = req.body;
+  const newComment = await Comment.create( { title, description, recordId: record } )
+  record.comment.push(newComment)
+  await record.save()
+
+  res.status(200).json(newComment)
+
+
+
+
+})
 // GET route to retrieve and display details of a specific record:
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params
-    const record = await Record.findById(id)
-
+    const record = await Record.findById(id).populate("comment")
     res.json({ ...record._doc })
   } catch (error) {
     res.status(404).json({ message: 'No record with this id' })
   }
 })
 
+//Edit pre-existing record
 router.put('/:id/update', uploader.single("imageUrl"), async (req, res, next) => {
   console.log("req.file: ", req.file, req.body)
   console.log("req.body: ", req.body)
