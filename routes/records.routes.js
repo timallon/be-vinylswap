@@ -24,7 +24,7 @@ router.post('/upload', isAuthenticated, uploader.single("imageUrl"), async (req,
         
   if (!req.file) {
     console.log("there was an error uploading the file")
-    // next(new Error('No file uploaded!'))
+    next(new Error('No file uploaded!'))
     return;
   }
   res.status(200).json(newRecord)
