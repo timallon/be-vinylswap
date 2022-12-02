@@ -58,11 +58,11 @@ router.put('/:id/update', uploader.single("imageUrl"), async (req, res, next) =>
   console.log("req.file: ", req.file, req.body)
   console.log("req.body: ", req.body)
   const { id } = req.params
-  const body = {...req.body }
-  const image = {image:req.file.path}
+  const body = {...req.body, image:req.file.path }
+ 
   
 
-  const record = await Record.findByIdAndUpdate(id, body, image, { new: true })
+  const record = await Record.findByIdAndUpdate(id, body, { new: true })
 
   res.json({ record })
 })
